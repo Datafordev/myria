@@ -49,7 +49,7 @@ public final class MasterApiServer {
     String keystorePath = server.getConfiguration(MyriaApiConstants.MYRIA_API_SSL_KEYSTORE);
     String keystorePassword = server.getConfiguration(MyriaApiConstants.MYRIA_API_SSL_KEYSTORE_PASSWORD);
     if (keystorePath != null && keystorePassword != null) {
-      LOGGER.info("Enabling SSL");
+      LOGGER.info("Enabling SSL in API server on port {}", port);
       baseUri = UriBuilder.fromUri(baseUri).scheme("https").build();
       HttpHandler handler = ContainerFactory.createContainer(HttpHandler.class, masterApplication);
       SSLContextConfigurator sslCon = new SSLContextConfigurator();
@@ -63,7 +63,7 @@ public final class MasterApiServer {
           GrizzlyServerFactory.createHttpServer(baseUri, handler, true, new SSLEngineConfigurator(sslCon, false, false,
               false));
     } else {
-      LOGGER.info("Not enabling SSL");
+      LOGGER.info("Not enabling SSL in API server on port {}", port);
       webServer = GrizzlyServerFactory.createHttpServer(baseUri, masterApplication);
     }
   }
